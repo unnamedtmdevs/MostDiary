@@ -142,7 +142,6 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             addBrowserHeaders(to: &request)
             webView.load(request)
         } else {
-            print("DEFAULT TO: \(urlString)")
             // Load the web view without the POST request if the URL does not match
             if let requestURL = URL(string: urlString) {
                 var request = URLRequest(url: requestURL)
@@ -183,7 +182,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         loadCheckTimer?.invalidate()
         loadCheckTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
             if let strongSelf = self, !strongSelf.isPageLoadedSuccessfully {
-                print("Страница не загрузилась в течение 5 секунд.")
+                // Страница не загрузилась в течение 5 секунд
             }
         }
     }
@@ -230,4 +229,5 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         super.viewDidLayoutSubviews()
     }
 }
+
 
