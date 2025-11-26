@@ -11,6 +11,8 @@ struct MainContainerView: View {
         Group {
             if coordinator.isLoading {
                 LoadingView()
+            } else if coordinator.showServerCheck {
+                ServerCheckView(coordinator: coordinator)
             } else if coordinator.showOnboarding {
                 OnboardingContainerView(coordinator: coordinator)
             } else {

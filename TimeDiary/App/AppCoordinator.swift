@@ -10,24 +10,28 @@ final class AppCoordinator: ObservableObject {
     @Published var showOnboarding = false
     @Published var currentOnboardingPage = 0
     @Published var selectedTab: TabItem = .home
+    @Published var showServerCheck = false
+    @Published var isServerBlocked = true
 
     private let storage = StorageService.shared
 
     init() {
-        checkOnboardingStatus()
+        checkServerStatus()
     }
 
-    private func checkOnboardingStatus() {
+    private func checkServerStatus() {
         Task {
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
-
-            let hasSeenOnboarding = storage.loadBool(forKey: UserDefaultsKeys.hasSeenOnboarding)
-
             await MainActor.run {
                 self.isLoading = false
-                self.showOnboarding = !hasSeenOnboarding
+                // Всегда показываем проверку сервера при запуске
+                self.showServerCheck = true
             }
         }
+    }
+    
+    private func checkOnboardingStatus() {
+        let hasSeenOnboarding = storage.loadBool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        self.showOnboarding = !hasSeenOnboarding
     }
 
     func completeOnboarding() {
